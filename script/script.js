@@ -118,8 +118,8 @@ function getAllData(url){
 			let pokemon = new Pokemon(arrNames[i], arrUrls[i]);			
 			arrPokemons.push(pokemon);
 		};
-		//let ab = arrPokemons[0].getabilities();
-		console.log(arrPokemons[0].getabilities().length);
+		let ab = arrPokemons[0].getabilities();
+		console.log(ab.length);
 		//console.log("first pokemons abilities: " + arrPokemons[0].getabilities());
 
 		/*return new Promise(function(resolve, reject){
