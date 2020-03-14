@@ -25,8 +25,7 @@ function getServersData(url){
 class Pokemon{
 	constructor(name,url){
 		this.name = name
-		this.url = url
-		this.abilNumber = 0
+		this.url = url		
 	}
 	//Pokemon methods
 	setAbilitiesNumber(number){
@@ -74,7 +73,7 @@ function getAllData(url){
 		for (let j=0; j<arrAbilities.length; j++){
 			let tempArr = arrAbilities[j];
 			tempArrPokemons[j].setAbilitiesNumber(tempArr.length);
-			console.log(arrPokemons[j].getAbilitiesNumber()); 
+			//console.log(tempArrPokemons[j].getAbilitiesNumber()); 
 			let tempAbilArr = tempArr.map(tempArr => tempArr.ability);
 			//console.log(tempAbilArr);
 			//let names = tempAbilArr.map(tempAbilArr => tempAbilArr.name);
@@ -84,8 +83,8 @@ function getAllData(url){
 			//console.log(names);
 			//console.log(urls);
 		};
-		console.log(tempAbilNames);
-		console.log(tempAbilUrls);
+		//console.log(tempAbilNames);
+		//console.log(tempAbilUrls);
 		let arrPromises = [];
 		for(let i=0; i<tempAbilUrls.length; i++){
 		 	arrPromises.push(getServersData(tempAbilUrls[i]));		
@@ -94,19 +93,21 @@ function getAllData(url){
 	})
 	.then(function(data){
 		let arrEffects = data.map(data => data.effect_entries[0]["effect"]);
-		console.log(arrEffects);
-		/*for( let i=0; i<step; i++){
+		//console.log(arrEffects);
+		let next = 0;
+		for( let i=0; i<step; i++){
 			let abilities = [];
 			let numberAbilities = tempArrPokemons[i].getAbilitiesNumber();
 			for(j=0; j<numberAbilities; j++){
-				let ability = [tempAbilNames[i+j], arrEffects[i+j]];
-				abilities.push(ability); 
+				let ability = [tempAbilNames[next], arrEffects[next]];
+				abilities.push(ability);
+				next++; 
 			};
-			console.log(abilities);
+			//console.log(abilities);
 			tempArrPokemons[i].setAbilities(abilities);
-			console.log("Pokemons " + arrPokemons[i].name + " abilities: ");
-			console.log(arrPokemons[i].getAbilities());
-		};*/
+			console.log("Pokemons " + tempArrPokemons[i].name + " abilities: ");
+			console.log(tempArrPokemons[i].getAbilities());			
+		};		
 	});
 };	
 
