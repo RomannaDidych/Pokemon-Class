@@ -1,12 +1,8 @@
 let nextPageURL = '';
-/*let tempArrPokemons = [];
-let tempAbilNames = [];*/
-
 let currentID = '1';
 let maxPagesNumber = 0;
-
 let step = 0;
-let numberOnPage = 0;
+
 
 
 function getServersData(url){
@@ -81,37 +77,26 @@ function loadList(url){
 		step = temp.length;
 		let arrNames = temp.map(temp => temp.name);				
 		let arrUrls = temp.map(temp => temp.url);		
-		for(let i=0; i<temp.length; i++ ){
+		for(let i=0; i<step; i++ ){
 			let pokemon = new Pokemon(arrNames[i], arrUrls[i]);			
 			tempArrPokemons.push(pokemon);
 		};
-
 		let arrPromises = [];
 		for(let i=0; i<arrUrls.length; i++){
 		 	arrPromises.push(getServersData(arrUrls[i]));		
 		};		
 		return Promise.all(arrPromises);		
 	})
-	.then(function(arr){
-		//console.log(arr);
-		let arrAbilities = arr.map(arr => arr.abilities);
-		//console.log(arrAbilities);
+	.then(function(arr){		
+		let arrAbilities = arr.map(arr => arr.abilities);		
 		let tempAbilUrls = [];
 		for (let j=0; j<arrAbilities.length; j++){
 			let tempArr = arrAbilities[j];
-			tempArrPokemons[j].setAbilitiesNumber(tempArr.length);
-			//console.log(tempArrPokemons[j].getAbilitiesNumber()); 
-			let tempAbilArr = tempArr.map(tempArr => tempArr.ability);
-			//console.log(tempAbilArr);
-			//let names = tempAbilArr.map(tempAbilArr => tempAbilArr.name);
-			tempAbilNames = tempAbilNames.concat(tempAbilArr.map(tempAbilArr => tempAbilArr.name));
-			//let urls = tempAbilArr.map(tempAbilArr => tempAbilArr.url);
-			tempAbilUrls = tempAbilUrls.concat(tempAbilArr.map(tempAbilArr => tempAbilArr.url));
-			//console.log(names);
-			//console.log(urls);
-		};
-		//console.log(tempAbilNames);
-		//console.log(tempAbilUrls);
+			tempArrPokemons[j].setAbilitiesNumber(tempArr.length);			
+			let tempAbilArr = tempArr.map(tempArr => tempArr.ability);			
+			tempAbilNames = tempAbilNames.concat(tempAbilArr.map(tempAbilArr => tempAbilArr.name));			
+			tempAbilUrls = tempAbilUrls.concat(tempAbilArr.map(tempAbilArr => tempAbilArr.url));			
+		};		
 		let arrPromises = [];
 		for(let i=0; i<tempAbilUrls.length; i++){
 		 	arrPromises.push(getServersData(tempAbilUrls[i]));		
@@ -119,8 +104,7 @@ function loadList(url){
 		return Promise.all(arrPromises);
 	})
 	.then(function(data){
-		let arrEffects = data.map(data => data.effect_entries[0]["effect"]);
-		//console.log(arrEffects);
+		let arrEffects = data.map(data => data.effect_entries[0]["effect"]);		
 		let next = 0;
 		for( let i=0; i<step; i++){
 			let abilities = [];
@@ -129,13 +113,9 @@ function loadList(url){
 				let ability = [tempAbilNames[next], arrEffects[next]];
 				abilities.push(ability);
 				next++; 
-			};
-			//console.log(abilities);
-			tempArrPokemons[i].setAbilities(abilities);
-			//console.log("Pokemons " + tempArrPokemons[i].name + " abilities: ");
-			//console.log(tempArrPokemons[i].getAbilities());			
-		};
-		//here
+			};			
+			tempArrPokemons[i].setAbilities(abilities);					
+		};		
 		let divList = document.createElement('div');
 		divList.id = currentID;
 		for (let i=0; i<tempArrPokemons.length; i++){
@@ -175,6 +155,5 @@ previous.onclick = function(){
 };
 
 let firstPageURL = "https://pokeapi.co/api/v2/pokemon/";
-
 loadList(firstPageURL);
 location.hash = currentID;
