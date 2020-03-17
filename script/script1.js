@@ -1,10 +1,11 @@
 let nextPageURL = '';
-let arrPokemons = [];
-let tempArrPokemons = [];
-let tempAbilNames = [];
+/*let tempArrPokemons = [];
+let tempAbilNames = [];*/
+
+let currentID = '1';
+let maxPagesNumber = 0;
 
 let step = 0;
-let index = 0; 
 let numberOnPage = 0;
 
 
@@ -18,6 +19,12 @@ function getServersData(url){
 					}
 				});
 			});
+};
+
+function changeCurrentID(arg){
+	let ID = Number(currentID) + arg;
+	currentID = String(ID);
+	return currentID;
 };
 
 
@@ -43,9 +50,29 @@ class Pokemon{
 	getAbilities(){
 		return this.abilities;
 	}
+
+	createLiElement(){
+		let newLi = document.createElement('li');
+		let h2 = document.createElement('h2');
+		h2.innerHTML = this.name;		
+		newLi.append(h2);
+		let ul = document.createElement('ul');
+		let arr = this.abilities;
+		for(let i=0; i<arr.length; i++){
+			let abilityLi = document.createElement('li');
+			let abilityText = arr[i][0] + ":      " + arr[i][1] + ";";
+			let text = document.createTextNode(abilityText);
+			abilityLi.append(text);
+			ul.append(abilityLi);
+		};
+		newLi.append(ul);
+		return newLi;
+	}
 }
 
-function getAllData(url){
+function loadList(url){
+	let tempArrPokemons = [];
+	let tempAbilNames = [];
 	let loadPokemonsList = getServersData(url);
 	loadPokemonsList
 	.then(function(value){
@@ -54,7 +81,7 @@ function getAllData(url){
 		step = temp.length;
 		let arrNames = temp.map(temp => temp.name);				
 		let arrUrls = temp.map(temp => temp.url);		
-		for(let i=0+index; i<temp.length; i++ ){
+		for(let i=0; i<temp.length; i++ ){
 			let pokemon = new Pokemon(arrNames[i], arrUrls[i]);			
 			tempArrPokemons.push(pokemon);
 		};
@@ -105,12 +132,49 @@ function getAllData(url){
 			};
 			//console.log(abilities);
 			tempArrPokemons[i].setAbilities(abilities);
-			console.log("Pokemons " + tempArrPokemons[i].name + " abilities: ");
-			console.log(tempArrPokemons[i].getAbilities());			
-		};		
+			//console.log("Pokemons " + tempArrPokemons[i].name + " abilities: ");
+			//console.log(tempArrPokemons[i].getAbilities());			
+		};
+		//here
+		let divList = document.createElement('div');
+		divList.id = currentID;
+		for (let i=0; i<tempArrPokemons.length; i++){
+			const newUl = tempArrPokemons[i].createLiElement();
+			divList.append(newUl);
+		};
+		maxPagesNumber +=1;
+		document.getElementById('listContainer').append(divList);	
 	});
-};	
+};
 
+next.onclick = function(){	
+	if (nextPageURL !== null) {
+		document.getElementById(currentID).style.display = 'none';
+		if (+currentID < maxPagesNumber){
+			location.hash = changeCurrentID(1);
+			document.getElementById(currentID).style.display = 'block';
+		} else {
+			location.hash = changeCurrentID(1);			
+			loadList(nextPageURL);
+		}
+	} else {
+		if (+currentID < maxPagesNumber){
+			document.getElementById(currentID).style.display = 'none';
+			location.hash = changeCurrentID(1);
+			document.getElementById(currentID).style.display = 'block';
+		};  
+	};
+};
+
+previous.onclick = function(){
+	if (+currentID > 1) {
+		document.getElementById(currentID).style.display = 'none';
+		location.hash = changeCurrentID(-1);
+		document.getElementById(currentID).style.display = 'block';
+	}
+};
 
 let firstPageURL = "https://pokeapi.co/api/v2/pokemon/";
-getAllData(firstPageURL);
+
+loadList(firstPageURL);
+location.hash = currentID;
