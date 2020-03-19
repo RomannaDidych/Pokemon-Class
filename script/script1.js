@@ -4,7 +4,6 @@ let maxPagesNumber = 0;
 let step = 0;
 
 
-
 function getServersData(url){
 	return new Promise(function(resolve,reject){
 				$.get(url, function(data,status){
@@ -22,8 +21,6 @@ function changeCurrentID(arg){
 	currentID = String(ID);
 	return currentID;
 };
-
-
 
 class Pokemon{
 	constructor(name,url){
@@ -55,14 +52,10 @@ class Pokemon{
 		let ul = document.createElement('ul');
 		let arr = this.abilities;
 		for(let i=0; i<arr.length; i++){
-			let abilityLi = document.createElement('li');
-			/*let abilityText = arr[i][0] + ":      " + arr[i][1] + ";";
-			let text = document.createTextNode(abilityText);
-			abilityLi.append(text);*/
+			let abilityLi = document.createElement('li');			
 			let abilityName = document.createElement('span');
 			const name = arr[i][0] + ":      ";
 			const textName = document.createTextNode(name);			
-			//textName.style.fontWeight = "bold";
 			abilityName.append(textName);
 			abilityName.style.fontWeight = "bold";
 			abilityLi.append(abilityName);
@@ -78,18 +71,15 @@ class Pokemon{
 
 function drowDot(){
 	let newDot = document.createElement('span');
-	document.getElementById('dots').append(newDot);
-	//setAttribute('id', 'id')
+	document.getElementById('dots').append(newDot);	
 	newDot.classList.add('dot');
 	const className = 'dot' + currentID;
 	newDot.classList.add(className);	
-	//document.getElementById('dots').append(newDot);
 };
 
 function changeDotColor(color){
-	const dotClassName = 'dot' + currentID;
-	console.log(dotClassName);
-	let dot = document.getElementsByClassName(dotClassName)[0];
+	const dotClassName = '.dot' + currentID;	
+	let dot = document.querySelector(dotClassName);
 	dot.style.backgroundColor = color;
 };
 
