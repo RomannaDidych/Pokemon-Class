@@ -66,6 +66,23 @@ class Pokemon{
 	}
 }
 
+function drowDot(){
+	let newDot = document.createElement('span');
+	document.getElementById('dots').append(newDot);
+	//setAttribute('id', 'id')
+	newDot.classList.add('dot');
+	const className = 'dot' + currentID;
+	newDot.classList.add(className);	
+	//document.getElementById('dots').append(newDot);
+};
+
+function changeDotColor(color){
+	const dotClassName = 'dot' + currentID;
+	console.log(dotClassName);
+	let dot = document.getElementsByClassName(dotClassName)[0];
+	dot.style.backgroundColor = color;
+};
+
 function loadList(url){
 	let tempArrPokemons = [];
 	let tempAbilNames = [];
@@ -123,7 +140,8 @@ function loadList(url){
 			divList.append(newUl);
 		};
 		maxPagesNumber +=1;
-		document.getElementById('listContainer').append(divList);	
+		document.getElementById('listContainer').append(divList);
+		drowDot();	
 	});
 };
 
@@ -131,17 +149,22 @@ next.onclick = function(){
 	if (nextPageURL !== null) {
 		document.getElementById(currentID).style.display = 'none';
 		if (+currentID < maxPagesNumber){
+			changeDotColor("#bbb");
 			location.hash = changeCurrentID(1);
 			document.getElementById(currentID).style.display = 'block';
+			changeDotColor("#2eb8b8");
 		} else {
+			changeDotColor("#bbb");
 			location.hash = changeCurrentID(1);			
 			loadList(nextPageURL);
 		}
 	} else {
 		if (+currentID < maxPagesNumber){
+			changeDotColor("#bbb");
 			document.getElementById(currentID).style.display = 'none';
 			location.hash = changeCurrentID(1);
 			document.getElementById(currentID).style.display = 'block';
+			changeDotColor("#2eb8b8");
 		};  
 	};
 };
@@ -149,8 +172,10 @@ next.onclick = function(){
 previous.onclick = function(){
 	if (+currentID > 1) {
 		document.getElementById(currentID).style.display = 'none';
+		changeDotColor("#bbb");
 		location.hash = changeCurrentID(-1);
 		document.getElementById(currentID).style.display = 'block';
+		changeDotColor("#2eb8b8");
 	}
 };
 

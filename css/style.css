@@ -2,3 +2,24 @@
  	width: 960px;
  	margin: 0 auto;
  }
+ .navigation{
+ 	display: flex;
+ 	justify-content: space-around;
+ 	flex-direction: row;
+ }
+ .dots{
+ 	display: flex;
+ 	justify-content: space-around;
+ }
+ .dot{
+  /*cursor: pointer;*/
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #2eb8b8;
+  border-radius: 50%;
+  display: inline-block;
+ /* transition: background-color 0.6s ease;*/
+}
+
+ 
