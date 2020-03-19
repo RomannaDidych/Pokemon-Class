@@ -56,7 +56,17 @@ class Pokemon{
 		let arr = this.abilities;
 		for(let i=0; i<arr.length; i++){
 			let abilityLi = document.createElement('li');
-			let abilityText = arr[i][0] + ":      " + arr[i][1] + ";";
+			/*let abilityText = arr[i][0] + ":      " + arr[i][1] + ";";
+			let text = document.createTextNode(abilityText);
+			abilityLi.append(text);*/
+			let abilityName = document.createElement('span');
+			const name = arr[i][0] + ":      ";
+			const textName = document.createTextNode(name);			
+			//textName.style.fontWeight = "bold";
+			abilityName.append(textName);
+			abilityName.style.fontWeight = "bold";
+			abilityLi.append(abilityName);
+			let abilityText = arr[i][1] + ";";
 			let text = document.createTextNode(abilityText);
 			abilityLi.append(text);
 			ul.append(abilityLi);
